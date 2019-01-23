@@ -1,0 +1,50 @@
+#下载地址
+https://github.com/deweylab/RSEM
+#编译安装
+make
+make ebseq
+#安装到/home/lst/opt/RSEM/bin
+make install DESTDIR=/home/lst prefix=/opt/RSEM
+#Note that make install does not install EBSeq related scripts, such as rsem-generate-ngvector, rsem-run-ebseq, and rsem-control-fdr. But rsem-generate-data-matrix, which generates count matrix for differential expression analysis, is installed.
+#建立index
+#rsem-prepare-reference --gtf TAIR10_ensemble_chr.gtf TAIR10_ensembl_chr.fa rsem/tair10
+rsem-prepare-reference --gtf TAIR10_ensemble_chr.gtf --bowtie2 TAIR10_ensembl_chr.fa rsem/tair10
+#build references from the Ensembl mouse transcripts
+rsem-prepare-reference \
+--transcript-to-gene-map ref/mouse_ref_mapping.txt \
+--bowtie2 --bowtie2-path software/bowtie2-2.2.6 \
+ref/mouse_ref.fa ref/mouse_ref
+#fasta
+rsem-calculate-expression -p 2 --bowtie2 --estimate-rspd --append-names --output-genome-bam SRR609269.fastq rsem/tair10 out
+#software/RSEM-1.2.25/rsem-calculate-expression -p 8 --paired-end \
+					--bowtie2 --bowtie2-path software/bowtie2-2.2.6 \
+					--estimate-rspd \
+					--append-names \
+					--output-genome-bam \
+					data/SRR937564_1.fastq data/SRR937564_2.fastq \
+					ref/mouse_ref exp/LPS_6h
+#R
+> data = read.table("Pe1200dnR1-3.genes.results", header=T, stringsAsFactors=F)
+> idx = order(data[,"TPM"], decreasing=T)
+> data[idx[1:10], c("gene_id", "expected_count", "TPM")]
+#画图
+rsem-plot-model LPS_6h LPS_6h_diagnostic.pdf
+#画图
+需要自己提取gene-ids
+rsem-plot-transcript-wiggles --gene-list --show-unique Pe1200dnR1-3 gene_ids.txt Pe1200dnR1-3_trans_wig.pdf
+'''
+过程
+samtools sort -@ 1 -m 1G -o Pe1200dnR1-3.transcript.sorted.bam Pe1200dnR1-3.transcript.bam
+rsem-bam2readdepth Pe1200dnR1-3.transcript.sorted.bam Pe1200dnR1-3.transcript.readdepth
+rsem-get-unique 1 Pe1200dnR1-3.transcript.bam Pe1200dnR1-3.uniq.transcript.bam
+samtools sort -@ 1 -m 1G -o Pe1200dnR1-3.uniq.transcript.sorted.bam Pe1200dnR1-3.uniq.transcript.bam
+rsem-bam2readdepth Pe1200dnR1-3.uniq.transcript.sorted.bam Pe1200dnR1-3.uniq.transcript.readdepth
+rsem-gen-transcript-plots Pe1200dnR1-3 gene_ids.txt 0 2 1 Pe1200dnR1-3_trans_wig.pdf
+'''
+
+
+
+
+
+
+

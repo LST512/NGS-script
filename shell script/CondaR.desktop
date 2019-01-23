@@ -1,0 +1,9 @@
+[Desktop Entry]
+Categories=Utility;TextEditor;IDE;
+Comment=Rstudio installed by conda
+Exec=/home/lst/opt/rstudio_conda_start.sh
+#Icon=/home/lst/.icons/cutecat.jpg
+Keywords=R IDE;RSTUDIO;
+Name=CondaR
+Terminal=false
+Type=Application

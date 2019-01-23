@@ -1,0 +1,5 @@
+#!/bin/bash
+#替换拟南芥的chloroplast为c;mitochondria为m.表头加Chr
+find . -name '*.bedgraph'|xargs sed -i 's/chloroplast/c/g'
+find . -name '*.bedgraph'|xargs sed -i 's/mitochondria/m/g'
+find . -name '*.bedgraph'|xargs sed -i 's/^/Chr&/g'

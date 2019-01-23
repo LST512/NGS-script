@@ -1,0 +1,9 @@
+#!/bin/bash
+index=/home/polya/data/tair/STAR_index
+output=/home/polya/data/tair/STAR_output
+#STAR --runThreadN 6 --outSAMtype BAM SortedByCoordinate --genomeDir $index --readFilesCommand zcat --readFilesIn C-0h-1_L4_I319.clean1.fastq.gz C-0h-1_L4_I319.clean2.fastq.gz --outFileNamePrefix $output/c01
+STAR --runThreadN 6 --outSAMtype BAM SortedByCoordinate --genomeDir $index --readFilesCommand zcat --readFilesIn C-0h-2_L4_I320.R1.clean.fastq.gz C-0h-2_L4_I320.R2.clean.fastq.gz --outFileNamePrefix $output/c02
+STAR --runThreadN 6 --outSAMtype BAM SortedByCoordinate --genomeDir $index --readFilesCommand zcat --readFilesIn C-0h-3_L4_I321.R1.clean.fastq.gz C-0h-3_L4_I321.R2.clean.fastq.gz --outFileNamePrefix $output/c03
+STAR --runThreadN 6 --outSAMtype BAM SortedByCoordinate --genomeDir $index --readFilesCommand zcat --readFilesIn W-0h-1_L6_383.R1.clean.fastq.gz W-0h-1_L6_383.R2.clean.fastq.gz --outFileNamePrefix $output/w01
+STAR --runThreadN 6 --outSAMtype BAM SortedByCoordinate --genomeDir $index --readFilesCommand zcat --readFilesIn W-0h-2_L6_384.R1.clean.fastq.gz W-0h-2_L6_384.R2.clean.fastq.gz --outFileNamePrefix $output/w02
+STAR --runThreadN 6 --outSAMtype BAM SortedByCoordinate --genomeDir $index --readFilesCommand zcat --readFilesIn W-0h-3_L6_385.R1.clean.fastq.gz W-0h-3_L6_385.R2.clean.fastq.gz --outFileNamePrefix $output/w03

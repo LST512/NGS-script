@@ -1,0 +1,2 @@
+c01Aligned.sortedByCoord.out.bam,c02Aligned.sortedByCoord.out.bam,c03Aligned.sortedByCoord.out.bam
+

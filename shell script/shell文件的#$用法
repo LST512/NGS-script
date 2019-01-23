@@ -1,0 +1,15 @@
+#!/bin/bash
+file=/home/lst/Desktop/this_my_test.1.2.3.txt
+echo $file			#  /home/lst/Desktop/this_my_test.1.2.3.txt  
+echo "${file#*/}"	#  home/lst/Desktop/this_my_test.1.2.3.txt	一个#，先写*, 删除左边第一个/及其左边的字符
+echo "${file#*_}"	#  my_test.1.2.3.txt						一个#，先写*, 删除左边第一个_及其左边的字符
+echo "${file##*_}"	#  test.1.2.3.txt							两个#，先写*, 删除最后一个_及其左边的字符
+echo "${file%_*}"	#  /home/lst/Desktop/this_my				一个%，后写*, 删除右边第一个_及其右边的字符
+echo "${file%%_*}"	#  /home/lst/Desktop/this					两个%，后写*, 删除第一个_及其右边的字符
+echo "#在左边，一个最小匹配，两个最大匹配；%在右边，一个最小匹配，两个最大匹配"
+echo "-------------------------------------------------------------------------------"
+echo "${file:0:5}"	#	/home	提取最左边5个字节
+echo "${file:5:5}"	#	/lst/	提取第5个字节右边连续的5个字节
+echo "${file/t/T}"	#	/home/lsT/Desktop/this_my_test.1.2.3.txt	一个/,替换第一个t为T
+echo "${file//t/T}"	#	/home/lsT/DeskTop/This_my_TesT.1.2.3.TxT	两个/,替换所有的t为T
+echo "${#file}"		#  40		计算变量的长度

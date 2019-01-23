@@ -1,0 +1,14 @@
+Annotated_3UTR=tair10_annotated_3UTR
+Group1_Tophat_aligned_Wig=mos2-SRR609270.bedgraph,col0-SRR609267.bedgraph
+Group2_Tophat_aligned_Wig=mos2-SRR609269.bedgraph,mos2-SRR609270.bedgraph
+Output_directory=DaPars_Test_data/
+Output_result_file=DaPars_Test_data
+
+#Parameters
+Num_least_in_group1=1
+Num_least_in_group2=1
+Coverage_cutoff=30
+FDR_cutoff=0.05
+PDUI_cutoff=0.5
+Fold_change_cutoff=0.59
+
