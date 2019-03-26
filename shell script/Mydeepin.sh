@@ -148,7 +148,6 @@ alter table test drop  column name; --删除表列
 alter table test modify address char(10) --修改表列类型
 alter table test change address address  char(40)
 alter table test change  column address address1 varchar(30)--修改表列名
-truncate table tableName 清除表内容
 #获取表结构
 mysqldump -uroot -p512513 -d tair10 AN_PAC > AN_PAC_tablestruc.sql
 mysqldump -uroot -p512513 -d tair10 col0_PAC > col0_PAC_tablestruc.sql
