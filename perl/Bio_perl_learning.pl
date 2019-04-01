@@ -134,8 +134,137 @@ print "$temp\t$count\n"; #HBCDEF	4
 
 
 
-
+=pod
 #从文件中读取数据
+$filename = "/home/lst/Desktop/content.txt";
+open(FILE,$filename);#文件句柄一般大写。小写会提示有问题，不影响结果。
+$file1 = <FILE>;#读写第一行
+print $file1;
+$file1 = <FILE>;#读写第二行
+print $file1;
+close file1;
+=cut
+
+=pod
+
+#一次读取完数据
+$filename = "/home/lst/Desktop/content.txt";
+open(FILE,$filename);
+@file1 = <FILE>;#@指数组变量，储存多个标量值的变量
+close file1;#close在print前后对输出结果貌似没影响
+print @file1,"\n";
+exit;
+
+=cut
+
+
+
+
+
+
+
+
+
+
+
+=pod
+#数组@的用法
+##打印元素
+@base = ('A',"T",'C','G');
+#@base = qw/A T C G/;
+print @base,"\n";#打印所有元素；ATCG
+print @base[0..3],"\n";#取所有元素ATCG
+print "@base\n";#空格隔开；A T C G
+print join("\t",@base),"\n";#用join自定义输出格式
+print join"\t",@base,"\n";#不用括号也行
+#循环自定义输出格式
+foreach $line(@base){
+    print "$line";
+    print "\t";#可以换成别的符号；
+}
+
+print "\n";#只为了换行
+print $base[0],"\n";#用的$符号，打印第一个元素；等同于print @base[0],"\n";A
+
+
+=POP
+## pop去掉数组最后一个元素
+@base = ('A',"T",'C','G');
+$base1 = pop @base;
+print $base1,"\n";#G
+print @base,"\n";#ATC
+
+
+## shift去掉数组第一个元素
+@base = ('A',"T",'C','G');
+$base2 = shift @base;
+print $base2,"\n";#A
+print @base,"\n";#TCG
+## unshift添加一个元素到表头
+unshift (@base,$base2);
+print @base,"\n";#恢复ATCG
+
+
+## push添加元素到末尾
+#@base = ('A',"T",'C','G');
+@base = qw/A T C G/;
+$base1 = shift @base;
+push (@base,$base1);#先数组，再元素。
+print @base,"\n";#TCGA
+##反转数组
+@reverse = reverse @base;
+print @reverse,"\n";#AGCT
+##获取数组长度
+print scalar @reverse,"\n";#4
+
+
+
+## splice 替换数组；splice(@ARRAY,OFFSET,LENGTH,LIST)
+#@ARRAY：要替换的数组。
+#OFFSET：起始位置。
+#LENGTH：替换的元素个数。
+#LIST：替换元素列表。
+
+#任意位置插入
+@base = qw/A T C G 1 2 3 4/;
+splice (@base,2,0,'x');
+print @base,"\n";#ATxCG1234
+splice (@base,2,2,'mnop');#xc被mnop替换
+print @base,"\n";#ATmnopG1234
+#替换(插入)。
+@nums = (1..10);
+print "替换前 - @nums\n";# 1 2 3 4 5 6 7 8 9 10
+splice(@nums, 2, 3, 21..28); #从第二位开始，用21-28替换3,4,5。替换不必一定相等
+print "替换后 - @nums\n";#1 2 21 22 23 24 25 26 27 28 6 7 8 9 10
+
+#数组的插入
+@a = (1..5);
+@b = (a..h);
+print "原始  @a\n";#1 2 3 4 5
+splice(@a , 2 , 2 , @b);
+print "插入  @a\n";#1 2 a b c d e f g h 5
+
+#删除；splice(@ARRAY,OFFSET,LENGTH)
+@a = (1..10);
+print "原始  @a\n";#1 2 3 4 5 6 7 8 9 10
+splice(@a , 2 , 6);
+print "删除  @a\n";#1 2 9 10
+=cut
+
+#删除到末尾 splice(@ARRAY,OFFSET)
+@a = (1..10);
+print "原始  @a\n";#1 2 3 4 5 6 7 8 9 10
+splice(@a , 2);
+print "删除  @a\n";# 1 2
+
+
+
+
+
+
+
+
+
 
 
 
