@@ -4,7 +4,8 @@ ORFfinder -in transport.fasta -s 0 -g 1 -ml 75 -out output
 #http://bioinformatics.ysu.edu/tools/OrfPredictor.html
 #参数如下，BLASTX为新建的空白文件，0表示没有BLASTX,both表示双链,1e-5为取值 out输出结果
 #（BLASTX 0 both三个参数必须写但是没用）
-perl OrfPredictor.pl transport.fasta BLASTX 0 both 1e-5 out
+perl OrfPredictor.pl spartina_NAC_uniq.fa BLASTX 0 both 1e-5 ORF_aa.fa
+perl extractCDS.pl spartina_NAC_uniq.fa ORF_aa.fa cds.fa
 --------------------------
 之前网页版的ORFfinder除运行速度较慢外，还存在两方面的缺陷：
 一是上传查找ORF只能开一个网页，每次弄一个CDS，blast完后还得再退回到上传序列那个页面
