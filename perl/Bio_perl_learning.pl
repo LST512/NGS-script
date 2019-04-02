@@ -59,7 +59,7 @@ print $rev,"\n";
 $str = "What a wonderful wonderful world.";
 ($str1 = $str) =~ s/w/'$&'/g; #$&代表比对到的字符串；等同于$str =~ s/w/'w'/g;sed的用[&]代表匹配的字符
 print $str1,"\n";
-#匹配小w，然后将该单词变成大写。
+#匹配小w，然后将该单词变成大写。print "\U$str";print "\L$str";
 ($str2 = $str) =~ s/w\w+/uc($&)/g; #What a uc(wonderful) uc(wonderful) uc(world).
 ($str2 = $str) =~ s/w\w+/uc($&)/ge; #What a WONDERFUL WONDERFUL WORLD.
 ($str2 = $str) =~ s/w\w+/uc($&)/gie; #WHAT a WONDERFUL WONDERFUL WORLD.
@@ -249,7 +249,7 @@ print "插入  @a\n";#1 2 a b c d e f g h 5
 print "原始  @a\n";#1 2 3 4 5 6 7 8 9 10
 splice(@a , 2 , 6);
 print "删除  @a\n";#1 2 9 10
-=cut
+
 
 #删除到末尾 splice(@ARRAY,OFFSET)
 @a = (1..10);
@@ -259,38 +259,146 @@ print "删除  @a\n";# 1 2
 
 
 
+##数组排序
+#sort 函数遍历原始数组的每两个元素，把左边的值放入变量 $a，右边的值放入变量 $b。 
+#然后调用比较函数。如果 $a 的内容应该在左边的话， 比较函数会返回 1；
+#如果 $b 应该在左边的话，返回 -1，两者一样的话，返回 0。
+#代码中使用 <=> 比较函数，表示依据数值字面大小排序，此为升序，若要降序排序，仅需调换标量 $a 和 $b 位置即可。
+#依据第一个字符 ASCII 值排序: 将上述代码中的比较函数改为 cmp 函数即可，这也是 perl 默认的比较函数。
+
+my @line=qw /1 2 3 6 5 4/;
+
+#从小到大
+foreach my $item(sort {$a <=> $b} @line){
+    print "$item,";
+}
+print "\n";
+print join(' ', sort { $a <=> $b } @line), "\n";
+#print join(' ', sort numerically @line), "\n";#use main::languages;
+#从大到小
+foreach my $item(sort {$b <=> $a} @line){
+    print "$item,";
+}
+
+#ASCII 值排序
+#use main::languages;
+my @line=qw /a b c f e d/;
+foreach my $item(sort {$a cmp $b} @line){
+    print "$item,";
+}
+print "\n";
+=cut
 
 
 
 
 
+=pod
+#### 判断、循环等语句
+#if-elsif-else
+$word = "ABCDE";
+if ($word eq "ABCD"){
+    print "ABCD\n";
+}
+elsif ($word eq "bcde"){
+    print "bcde\n;"
+}
+elsif ($word eq "ABCDE"){
+    print "ABCDE\n";
+}
+else {
+    print "not right\n";
+}
 
 
 
+## 循环
+$pep = "/home/lst/Desktop/perl/content.txt";
+unless (open (PEP, $pep) ){
+    print "FILE NOT EXIST";
+}
+while ($pepfile = <PEP> ){
+    print "\n";
+    print $pepfile;#while 循环打印每行的内容
+}
+close PEP;
 
 
 
+## 获取用户输入，查找motif
+print "pls input filename: \n";
+$pepname = <STDIN>;
+chomp $pepname;#去除名字的\n符号，但是发现不去也没报错，可能新版改进了？
+unless  (open (PEP,$pepname) ){
+    print "error"
+}
+@pepfile = <PEP>;
+close PEP;
+#print $pepfile[0];
+$pep = join( "", @pepfile);#指定空字符创来连接数组各个元素。也可以用\t等
+$pep =~ s/\s//g;#匹配 空格，制表符，换行符，换页符和回车符的任意一个。
+#print $pep;
+
+do { 
+    print "type a motif: \n";
+    $motif = <STDIN>;
+    chomp $motif;#如果不加，motif/n格式不对，不会被识别。
+    if ($pep =~ /$motif/){
+        print "got it\n";
+    }
+    else {
+        print "not\n";
+    }
+} until ( $motif =~ /^\s*$/ );#如果不输入或者输入空白字符，退出程序
 
 
 
+#正则匹配
+#A[DS]=>AD OR AS
+#ATC*G{2,} 匹配AT,2个或多个C
+#EE.*EE 匹配两个E,然后任意字符，之后紧跟两个E。.*代表0个或多个这样的字符
+=cut
 
+##计算核苷酸
+print "pls input filename: \n";
+$DNA = <STDIN>;#获取输入
+chomp $DNA;#去除\n
+unless ( open (DNA_FILE,$DNA) ){#打开文件
+    print "Cant open $DNA\n";
+}
+@DNA = <DNA_FILE>;#读取内容到数组
+close DNA_FILE;
+$DNA = join ("",@DNA);#每行用空白符连起来，也可用别的符号
+$DNA =~ s/\s//g;#去除空白符，变成一行
+#$DNA = split ("",$DNA);#计算个数
+@DNA = split ("", $DNA);#单个字母组成数组
+#print join ("\n",@DNA);#换行符打印
+$A_count = 0;
+$T_count = 0;
+$C_count = 0;
+$G_count = 0;
+$N_count = 0;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+foreach $base (@DNA) {
+    if ($base eq 'A'){
+        $A_count++;
+    }
+    elsif ($base eq 'T'){
+        $T_count++;
+    }
+    elsif ($base eq 'C'){
+        $C_count++;
+    }
+    elsif ($base eq 'G'){
+        $G_count++;
+    }
+    else {
+        $N_count++;
+    }
+}
+print $A_count,"\n";
+print $T_count,"\n";
+print $C_count,"\n";
+print $G_count,"\n";
 
 
