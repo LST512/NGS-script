@@ -358,7 +358,7 @@ do {
 #ATC*G{2,} 匹配AT,2个或多个C
 #EE.*EE 匹配两个E,然后任意字符，之后紧跟两个E。.*代表0个或多个这样的字符
 =cut
-
+=pod
 ##计算核苷酸
 print "pls input filename: \n";
 $DNA = <STDIN>;#获取输入
@@ -371,14 +371,16 @@ close DNA_FILE;
 $DNA = join ("",@DNA);#每行用空白符连起来，也可用别的符号
 $DNA =~ s/\s//g;#去除空白符，变成一行
 #$DNA = split ("",$DNA);#计算个数
-@DNA = split ("", $DNA);#单个字母组成数组
+@DNA = split ("", $DNA);#字符串拆解成数组
 #print join ("\n",@DNA);#换行符打印
 $A_count = 0;
 $T_count = 0;
 $C_count = 0;
 $G_count = 0;
 $N_count = 0;
-
+#第一种
+=cut
+=pod
 foreach $base (@DNA) {
     if ($base eq 'A'){
         $A_count++;
@@ -396,9 +398,59 @@ foreach $base (@DNA) {
         $N_count++;
     }
 }
+
+#第二种
+# 不提供参数时，perl内置函数对这个特殊变量操作；
+foreach (@DNA){
+    if ($_ =~ /A/){
+        $A_count++;
+    }
+    elsif (/T/){
+        $T_count++;
+    }
+    elsif (/C/){
+        $C_count++;
+    }
+    elsif (/G/){
+        $G_count++;
+    }
+    else {#else代表其他情况，不能写成else (/N/){$N_count++}
+        $N_count++;
+    }
+}
+
 print $A_count,"\n";
 print $T_count,"\n";
 print $C_count,"\n";
 print $G_count,"\n";
+print $N_count,"\n";
+=cut
+
+
+
+
+
+
+
+
+
+=pod
+##字符串与数字的智能处理
+$num = 123;
+$str = "123";
+$num_add_str = $num +$str;
+$str1 = $num.$str;
+$str2 = $str.$num;
+print $num_add_str,"\n";#246
+print $str1,"\n";#123123
+print $str2,"\n";#123123
+=cut
+
+
+
+
+
+
+
 
 
