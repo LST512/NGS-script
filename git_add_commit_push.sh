@@ -1,7 +1,7 @@
 #!/bin/bash
-date
 
-echo -e "\e[1;31m..Start...git.....\e[0m\n"
+echo -e "\e[1;31m..Start..git.....\e[0m\n"
+date
 echo -e "##############################\n"
 
 if [ ! -n $1 ];then
@@ -11,5 +11,4 @@ else
 fi
 echo -e "##############################\n"
 echo -e "\e[1;32m..ok.....finish git.....\e[1;32m\n"
-
 date
