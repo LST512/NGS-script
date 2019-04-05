@@ -8,10 +8,10 @@ echo -e "##############################\n"
 
 
 if [ ! -n $1 ];then
-    echo -e "\e[1;41m No add git_commit content \e[0m\n"
+    echo -e "\e[1;43m No add git_commit content \e[0m\n"
     git add --all && git commit -m "add content" && git push origin master
 else
-    echo -e "\e[1;43m add git commit content:\e[0m$1\n"
+    echo -e "\e[1;41m add git commit content:\e[0m$1\n"
     git add --all && git commit -m "$1" && git push origin master
 fi
 
