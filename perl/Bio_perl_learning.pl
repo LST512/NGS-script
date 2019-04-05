@@ -59,7 +59,7 @@ print $rev,"\n";
 $str = "What a wonderful wonderful world.";
 ($str1 = $str) =~ s/w/'$&'/g; #$&代表比对到的字符串；等同于$str =~ s/w/'w'/g;sed的用[&]代表匹配的字符
 print $str1,"\n";
-#匹配小w，然后将该单词变成大写。print "\U$str";print "\L$str";
+#匹配小w，然后将该单词变成大写，uc大写，lc小写；print "\U$str";print "\L$str";
 ($str2 = $str) =~ s/w\w+/uc($&)/g; #What a uc(wonderful) uc(wonderful) uc(world).
 ($str2 = $str) =~ s/w\w+/uc($&)/ge; #What a WONDERFUL WONDERFUL WORLD.
 ($str2 = $str) =~ s/w\w+/uc($&)/gie; #WHAT a WONDERFUL WONDERFUL WORLD.
@@ -358,6 +358,8 @@ do {
 #ATC*G{2,} 匹配AT,2个或多个C
 #EE.*EE 匹配两个E,然后任意字符，之后紧跟两个E。.*代表0个或多个这样的字符
 =cut
+
+
 =pod
 ##计算核苷酸
 print "pls input filename: \n";
@@ -371,7 +373,7 @@ close DNA_FILE;
 $DNA = join ("",@DNA);#每行用空白符连起来，也可用别的符号
 $DNA =~ s/\s//g;#去除空白符，变成一行
 #$DNA = split ("",$DNA);#计算个数
-@DNA = split ("", $DNA);#字符串拆解成数组
+@DNA = split ("", $DNA);#字符串拆解成数组,数据大，不可取。
 #print join ("\n",@DNA);#换行符打印
 $A_count = 0;
 $T_count = 0;
@@ -380,6 +382,9 @@ $G_count = 0;
 $N_count = 0;
 #第一种
 =cut
+
+
+
 =pod
 foreach $base (@DNA) {
     if ($base eq 'A'){
@@ -403,7 +408,7 @@ foreach $base (@DNA) {
 # 不提供参数时，perl内置函数对这个特殊变量操作；
 foreach (@DNA){
     if ($_ =~ /A/){
-        $A_count++;
+        $A_count++
     }
     elsif (/T/){
         $T_count++;
@@ -426,6 +431,105 @@ print $G_count,"\n";
 print $N_count,"\n";
 =cut
 
+=pod
+#第三种
+print "pls input filename: \n";
+$DNA = <STDIN>;#获取输入
+chomp $DNA;#去除\n
+unless (-e $DNA){
+    print "NOT EXIST";
+}
+unless ( open (DNA_FILE,$DNA) ){#打开文件
+    print "Cant open $DNA\n";
+    exit;
+}
+@DNA = <DNA_FILE>;#读取内容到数组
+close DNA_FILE;
+$DNA = join ("",@DNA);#每行用空白符连起来，也可用别的符号
+$DNA =~ s/\s//g;#去除空白符，变成一行
+
+$A_count = 0;
+$T_count = 0;
+$C_count = 0;
+$G_count = 0;
+$N_count = 0;
+#或用while
+#position=0；
+#while($position<length$DNA){
+#    $position++;
+#    the same to for
+#}
+for ($position=0;$position<length$DNA;++$position){
+    $base = substr($DNA,$position,1);
+    if ($base eq "A"){
+        ++$A_count;
+    }
+    elsif ($base =~ /T/){
+        ++$T_count;
+    }
+    elsif ($base =~/C/){
+        ++$C_count;
+    }
+    elsif ($base =~/G/){
+        ++$G_count;
+    }
+    else{
+        $N_count++;
+    }
+}
+
+print $A_count,"\n";
+print $T_count,"\n";
+print $C_count,"\n";
+print $G_count,"\n";
+print $N_count,"\n";
+=cut
+
+=pod
+#第四种,保存写入文件
+print "pls input filename: \n";
+$DNA = <STDIN>;#获取输入
+chomp $DNA;#去除\n
+unless (-e $DNA){
+    print "NOT EXIST";
+}
+unless ( open (DNA_FILE,$DNA) ){#打开文件
+    print "Cant open $DNA\n";
+    exit;
+}
+@DNA = <DNA_FILE>;#读取内容到数组
+close DNA_FILE;
+$DNA = join ("",@DNA);#每行用空白符连起来，也可用别的符号
+$DNA =~ s/\s//g;#去除空白符，变成一行
+
+# while loop
+# $A_count = 0;
+# $T_count = 0;
+# $C_count = 0;
+# $G_count = 0;
+# $N_count = 0;
+#while ($DNA =~ /a/ig ) {$A_count++};#不加分号，也可以
+#while ($DNA =~ /t/ig ) {$T_count++};
+#while ($DNA =~ /c/ig ) {$C_count++}
+#while ($DNA =~ /g/ig ) {$G_count++};
+
+# 用tr
+$A_count = $DNA =~ tr/Aa//;
+$T_count = $DNA =~ tr/Tt//;
+$C_count = $DNA =~ tr/Cc//;
+$G_count = $DNA =~ tr/Gg//;
+$N_count = $DNA =~ tr/Nn//;
+$all_count = $DNA =~ tr/ATCGatcg//;
+$N_counts = length($DNA) - $all_count;
+print length($DNA),"\n",$all_count,"\n",$N_counts,"\n";
+#结果写入文件
+$output = "countbase";
+unless (open (COUNT_NUM, ">$output")){
+    print "cant be written\n";
+}
+print COUNT_NUM "a=$A_count t=$T_count c=$C_count g=$G_count\n";
+close COUNT_NUM;
+=cut
 
 
 
@@ -433,6 +537,41 @@ print $N_count,"\n";
 
 
 
+
+
+
+=pod
+#substr;返回给定位置的字符串。4个参数；
+#1，字符串；2，位置(偏移量)；3，获取子串的长度;4，替换字符串
+use 5.010;#直接调用say会报错；say自带换行符
+$str = "123456789";
+say substr $str,2,-2;#34567;左2(0开始，包括)，右2(1开始,不包括)之间的字符串.
+say substr $str,-2,2;#89；负数为偏移量，包括该位置。
+say substr $str,2;#3456789
+say substr $str,-1,1;#9
+#替换
+$A = substr $str,2,-2,A;
+say $A;#34567
+say $str;#12A89
+=cut
+
+
+=pod
+#index
+#函数会传入两个字符串参数
+#并且返回第二个字符串在第一个字符串中的位置
+use 5.010;
+$str = "AB CC abCD";
+#       0123456789
+say index $str,"CD";#8
+say index $str,"E";#-1,代表没有
+say index $str,"a";#6
+say index $str,"C";#3
+say index $str,"C ";#4,有空格
+#第三个参数，从哪个位置开始搜索
+say index $str,"C",5;#8,从第五个我字符开始(包括)
+say rindex $str,"C",5;#4
+=cut
 
 =pod
 ##字符串与数字的智能处理
@@ -446,11 +585,36 @@ print $str1,"\n";#123123
 print $str2,"\n";#123123
 =cut
 
+# $DNA = "ATCG";
+# $LEN = length $DNA;
+# print ' ' x $LEN;# x代表重复
+# print $DNA;
 
-
-
-
-
-
-
+##正则表达式
+# \p{Space} 匹配空格，换行符
+# \p{Digit} 匹配数字
+# P 大写的P,指不匹配该元素
+# if (/\P{Space}}/) 包含不匹配空格或者换行符的元素
+# if (/\P{Digit}/) 包含不匹配数字的元素
+# ？ 0或1次
+# + 1或多次
+# * 任意次 
+# . 除换行符外的任意字符
+# [a-z0-9]
+# [^a-z0-9]
+# \s 匹配一个空字符，空格,和 [\n\t\r\f] 语法一样
+# \S 非空格,和 [^\n\t\r\f] 语法一样
+# \b 匹配以英文字母,数字为边界的字符串
+# \B 匹配不以英文字母,数值为边界的字符串
+# \d 匹配一个数字的字符,和 [0-9] 语法一样
+# \D 非数字 等于[^0-9]
+# \w  匹配一个字母、数字或下划线字符，相当于[a-zA-Z_0-9]
+# \W 非英文字母或数字的字符串,和 [^a-zA-Z0-9_] 语法一样
+# /abc+/
+# /(abc)+/
+# /(abc)\1/ 重复一次，即至少两个。
+# /(abc)(def)\1\2/ 先后顺序匹配
+$_ = "abcabcdef";
+if ( /(abc)\1/ ) {print "total twice\n"};
+if ( /(abc)|(def)/ ) {print "got it"};
 
