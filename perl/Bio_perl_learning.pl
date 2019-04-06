@@ -614,7 +614,9 @@ print $str2,"\n";#123123
 # /(abc)+/
 # /(abc)\1/ 重复一次，即至少两个。
 # /(abc)(def)\1\2/ 先后顺序匹配
-$_ = "abcabcdef";
-if ( /(abc)\1/ ) {print "total twice\n"};
-if ( /(abc)|(def)/ ) {print "got it"};
+# $_ = "abcabcdef";
+# if ( /(abc)\1/ ) {print "total twice\n"};
+# if ( /(abc)|(def)/ ) {print "got it"};
+
+
 
