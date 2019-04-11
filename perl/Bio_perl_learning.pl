@@ -1,5 +1,5 @@
 #!/usr/bin/perl -w
-
+use strict;
 #2019-4-1
 #learn perl
 #lst
@@ -617,6 +617,95 @@ print $str2,"\n";#123123
 # $_ = "abcabcdef";
 # if ( /(abc)\1/ ) {print "total twice\n"};
 # if ( /(abc)|(def)/ ) {print "got it"};
+
+
+
+#引用和解引用
+# $scal_ref = \$scal;     标量引用
+
+# $arr_ref = \@arr;       列表引用
+
+# $hash_ref = \%hashe;    哈希引用
+
+# $handle = \*STDOUT ;    文件句柄引用
+# $routine = \&routine;   函数引用
+ 
+#子程序：通过值传递
+# 简单的参数
+# my $i = 2;
+# my_sub1($i);
+# print "final $i\n";
+
+# sub my_sub1{
+#     my ($i) = @_;# perl中把所有参数都当做一个单独的数组，
+#                  # 用@_这个特殊数组传递给子程序。括号必须
+#     $i += 100;
+#     print "子程序，$i\n";
+# }
+
+#多参数
+# my @i = ("1","2","3");
+# my @j = ("a","b","c");
+
+my @i = qw/1 2 3/;
+my @j = qw/a b c/;
+
+print "第一次打印\n";
+print "@i\n";# 1 2 3
+print "@j\n";# a b c
+
+#通过值传递
+# my_sub2(@i,@j);
+# print "引用后打印\n";
+# print "i=@i\n";# i=1 2 3
+# print "j=@j\n";# j=a b c
+
+
+# sub my_sub2{
+#     my(@i,@j)=@_;# 所有元素都赋值给@i
+#     print "函数内打印\n";
+#     print "i= @i\n";# i= 1 2 3 a b c
+#     print "j= @j\n";# j= 
+#     push(@i,"4");
+#     shift(@j);
+#     print "函数内打印2\n";
+#     print "i= @i\n";# i= 1 2 3 a b c 4
+#     print "j= @j\n";# j= 
+# }
+
+
+
+# 通过引用传递
+my_sub2(\@i,\@j);
+print "引用后打印\n";
+print "i=@i\n";# i=1 2 3
+print "j=@j\n";# j=a b c
+
+
+sub my_sub2{
+    my($i,$j)=@_;
+    print "函数内打印\n";
+    print "i= @$i\n";# i= 1 2 3 只写$i,打印地址
+    print "j= @$j\n";# j= a b c
+    push(@$i,"4");
+    shift(@$j);
+    print "函数内打印2\n";
+    print "i= @{$i}\n";# i= 1 2 3 4
+    print "j= @$j\n";# j= b c
+}
+
+# my %test = (a=>1,'b'=>'2');
+# print "$test{a}\n";
+my %data = (-google=>'google.com', 'runoob'=>'runoob.com', 'taobao'=>'taobao.com');
+print "$data{-google}\n";
+my @key_all = keys %data;
+print "@key_all";
+
+
+
+
+
+
 
 
 

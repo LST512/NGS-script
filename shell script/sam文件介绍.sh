@@ -11,3 +11,7 @@ TLEN：模板的长度。
 SEQ：序列。
 QUAL：序列的质量打分（fasta文件中的那个）。
 #
+NH:i:1 指此条reads比对到几个loci。1代表unique map
+HI:i:1 attrbiutes enumerates multiple
+AS:i: 后面数值代表得分
+nM:i: 后面数值代表错配数目
