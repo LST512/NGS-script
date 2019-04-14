@@ -1,3 +1,4 @@
+#!/home/lst/miniconda2/envs/my_perl/bin/perl -w
 #!/usr/bin/perl -w
 use strict;
 #2019-4-1
@@ -647,12 +648,12 @@ print $str2,"\n";#123123
 # my @i = ("1","2","3");
 # my @j = ("a","b","c");
 
-my @i = qw/1 2 3/;
-my @j = qw/a b c/;
+# my @i = qw/1 2 3/;
+# my @j = qw/a b c/;
 
-print "第一次打印\n";
-print "@i\n";# 1 2 3
-print "@j\n";# a b c
+# print "第一次打印\n";
+# print "@i\n";# 1 2 3
+# print "@j\n";# a b c
 
 #通过值传递
 # my_sub2(@i,@j);
@@ -675,37 +676,52 @@ print "@j\n";# a b c
 
 
 
-# 通过引用传递
-my_sub2(\@i,\@j);
-print "引用后打印\n";
-print "i=@i\n";# i=1 2 3
-print "j=@j\n";# j=a b c
+# # 通过引用传递
+# my_sub2(\@i,\@j);
+# print "引用后打印\n";
+# print "i=@i\n";# i=1 2 3
+# print "j=@j\n";# j=a b c
 
 
-sub my_sub2{
-    my($i,$j)=@_;
-    print "函数内打印\n";
-    print "i= @$i\n";# i= 1 2 3 只写$i,打印地址
-    print "j= @$j\n";# j= a b c
-    push(@$i,"4");
-    shift(@$j);
-    print "函数内打印2\n";
-    print "i= @{$i}\n";# i= 1 2 3 4
-    print "j= @$j\n";# j= b c
+# sub my_sub2{
+#     my($i,$j)=@_;
+#     print "函数内打印\n";
+#     print "i= @$i\n";# i= 1 2 3 只写$i,打印地址
+#     print "j= @$j\n";# j= a b c
+#     push(@$i,"4");
+#     shift(@$j);
+#     print "函数内打印2\n";
+#     print "i= @{$i}\n";# i= 1 2 3 4
+#     print "j= @$j\n";# j= b c
+# }
+
+
+
+#哈希hash的使用
+# # my %test = (a=>1,'b'=>'2');
+# # print "$test{a}\n";
+# my %data = (-google=>'google.com', runoob => 'runoob.com', 'taobao'=>'taobao.com');
+# print "$data{-google}\n";
+# my @key_all = keys %data;
+# print "@key_all\n";
+
+
+# perl调试
+# -d
+# p打印；v查看；n不会直接进如子程序，一行一行处理；s进入子程序；
+# b设置断点，b 12；B *,删除所有断点; c,继续。
+
+my @text = qw/1 2 3 4 5 6/;
+
+foreach(@text){
+    if ($_==3){
+        next;#跳转到下个循环
+        #last;直接结束
+    }
+    elsif($_<=4){
+        print "$_\n";
+    }
+    else{
+        print "---\n";
+    }
 }
-
-# my %test = (a=>1,'b'=>'2');
-# print "$test{a}\n";
-my %data = (-google=>'google.com', 'runoob'=>'runoob.com', 'taobao'=>'taobao.com');
-print "$data{-google}\n";
-my @key_all = keys %data;
-print "@key_all";
-
-
-
-
-
-
-
-
-
