@@ -711,17 +711,36 @@ print $str2,"\n";#123123
 # p打印；v查看；n不会直接进如子程序，一行一行处理；s进入子程序；
 # b设置断点，b 12；B *,删除所有断点; c,继续。
 
-my @text = qw/1 2 3 4 5 6/;
+# my @text = qw/1 2 3 4 5 6/;
 
-foreach(@text){
-    if ($_==3){
-        next;#跳转到下个循环
-        #last;直接结束
-    }
-    elsif($_<=4){
-        print "$_\n";
-    }
-    else{
-        print "---\n";
-    }
-}
+# foreach(@text){
+#     if ($_==3){
+#         next;#跳转到下个循环
+#         #last;直接结束
+#     }
+#     elsif($_<=4){
+#         print "$_\n";
+#     }
+#     else{
+#         print "---\n";
+#     }
+# }
+
+
+# rand srand
+# int 取整数部分
+# 0<rand(7)<7,浮点数
+
+## 以下三个等价
+# $verb[int(rand(scalar @verb))]
+# $verb[int rand scalar @verb]
+# $verb[rand @verb]
+#既然rand已经期望一个标量值，它就会把@verb放在
+#一个标量上下文中，也就是简单的返回数组的大小。
+#数组的下标总是整数，需要下标时，会自动提取浮点
+#的整数部分
+######
+
+
+
+

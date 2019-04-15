@@ -56,6 +56,7 @@ source activate biosoft
 source deactivate
 # install packages from bioconda
 #http://bioconda.github.io/recipes.html
+conda update -n base conda #升级conda
 conda install fastqc hisat2 star samtools bedtools blast trimmomatic sra-tools meme trim-galore homer
 
 #创建第二个环境，避免依赖冲突
@@ -80,6 +81,7 @@ secure_file_priv	=
 --datadir  mysql数据仓库目录
 '''
 # 输出的内容会最后有root密码，记下，后面登录要修改密码才能用。
+#mysql接入异常，强制升级解决问题；conda install mysql=5.7.24（2019-4-15）
 mysqld --initialize --user=lst --basedir=/home/lst/miniconda3/envs/PasSeq --datadir=/home/lst/miniconda3/envs/PasSeq/data
 mysql.server {start|stop|restart|reload|force-reload|status}  
 # 登录mysql并且修改密码:xfdojPo,Q6Vz
