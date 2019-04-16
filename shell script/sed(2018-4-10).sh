@@ -2,6 +2,14 @@
 # date:2018-4-10
 # forked by http://dongweiming.github.io/sed_and_awk/#/3
 # lst
+
+
+#2019-4-16 更新
+
+#sed精确匹配
+#为了去除switch表里面的NA值，但表里面有mRNA等可以匹配NA
+sed "/\<NA\>/d" file
+
 '''
 sed [option] {sed-commands} {input-file}
 '''
@@ -131,6 +139,7 @@ sed '1~2 d' file
 sed '/root/ ,/bin/ d' file
 sed '/^$/ d' file
 sed '/^#/ d' file
+sed "/\<NA\>/d" file #精确匹配
 '''
 重定向 w
 '''
