@@ -743,4 +743,121 @@ print $str2,"\n";#123123
 
 
 
+###限制性内切酶
+# 从rebase数据库获取data，bionet.txt
+#格式如下
+# REBASE version 904                                              bionet.904
+ 
+#     =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+#     REBASE, The Restriction Enzyme Database   http://rebase.neb.com
+#     Copyright (c)  Dr. Richard J. Roberts, 2019.   All rights reserved.
+#     =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+ 
+# Rich Roberts                                                    Mar 29 2019
+ 
+# AaaI (XmaIII)                     C^GGCCG
+# AacLI (BamHI)                     GGATCC
+# AaeI (BamHI)                      GGATCC
+# AagI (ClaI)                       AT^CGAT
+# AanI (PsiI)                       TTA^TAA
+# AaqI (ApaLI)                      GTGCAC
+# AarI                              CACCTGCNNNN^
+# AarI                              ^NNNNNNNNGCAGGTG
+# AasI (DrdI)                       GACNNNN^NNGTC
+# AatI (StuI)                       AGG^CCT
+# AatII                             GACGT^C
+# AauI (Bsp1407I)                   T^GTACA
 
+#处理该文件
+
+# parseREBASE
+# sub parseREBASE{
+#     my ($rebasefile) = @_;
+
+#     #声明变量
+#     my @rebasefile = ();
+#     my %rebase_hash =();
+#     my $name;#酶名字
+#     my $site;#酶位点
+#     my $regexp;#正则表达式的转换
+
+#     # read input file
+#     my $rebase_filehandle = open_file($rebasefile);
+#     while (<$rebase_filehandle>){
+#         #丢弃前几行
+#         (1 .. /Rich Roberts/) and next;
+#         #丢弃空白行
+#         /^\s*$/ and next;
+#         #将每行分割成两部分或者三部分
+#         my @fields = split(" ",$_);
+#         #取第一列
+#         $name = shift @fields;
+#         #取最后一列
+#         $site = pop @fields;
+        
+
+#         #翻译位点
+#         $regexp = IUB2RE($site);
+
+#         #储存数据
+#         $rebase_hash{$name} = "$site $regexp";
+#     }
+
+#     # 返回哈希
+#     return %rebase_hash;
+
+
+# }
+
+# # 打开文件
+# sub open_file {
+
+#     my($filename) = @_;
+#     my $fh;
+
+#     unless(open($fh, $filename)) {
+#         print "Cannot open file $filename\n";
+#         exit;
+#     }
+#     return $fh;
+# }
+
+# # IUB码的转变
+
+# sub IUB2RE{
+#     my ($iub) = @_;
+#     my $re = "";
+#     my %iub2char = (
+#         A => "A",
+#         T => "T",
+#         C => "C",
+#         G => "G",
+#         R =>"[GA]",
+#         Y => '[CT]',
+#         M => '[AC]',
+#         K => '[GT]',
+#         S => '[GC]',
+#         W => '[AT]',
+#         B => '[CGT]',
+#         D => '[AGT]',
+#         H => '[ACT]',
+#         V => '[ACG]',
+#         N => '[ACGT]',
+#     );
+#     # remove the ^ sign
+#     $iub =~ s/\^//g;
+#     #translate each character 
+#     for(my $i=0;$i<length($iub);++$i){
+#         $re .= $iub2char{substr($iub,$i,1)};
+#     }
+#     return $re;
+
+# }
+
+# my $str = "ABCDE";
+# #my $str2;
+# for(my $i=0;$i<5;++$i){
+#     #print "$i ";# 0 1 2 3 4 从零开始
+#     my $str2 = substr($str,$i,1);
+#     print "$str2-";#A-B-C-D-E-
+# }
