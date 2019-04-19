@@ -65,6 +65,10 @@ echo "123"|sed 's/\|/m/g' #竖线匹配前面或者后面，输出m1m2m3m
 '''
 大小写转换\l \L \u \U  \E
 '''
+#2019-4-19
+sed "s/[atcg]/\u&/g" file #所有的atcg变成ATCG
+sed 's/[A-Z]/\l&/g' file  #所有大写变小写
+sed 's/\b[a-z]/\u&/g' file #每个单词的第一个小写变大写
 sed 's/USER/US\lER/' file #USeR  \l将后面一个变成小写
 sed 's/USER/US\LER/' file #USer  \L将后面所有变成小写
 sed 's/user/us\uer/' file #usEr  \u将后面一个变成大写
