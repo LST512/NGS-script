@@ -298,6 +298,7 @@ for语法
 #for(initialization;condition;increment/decrement)
 #actions
 #############
+cat file|awk 'BEGIN{sum=0}{sum+=$1}END{print sum}' #计算第一列和
 echo "1 2 3 4"|awk '{for(i=1;i<=NF;i++)sum=sum+$i}END{print sum}'	#每列数求和，10
 echo "1 2 3 4"|awk 'BEGIN{sum=10}{for(i=1;i<=NF;i++)sum=sum+$i}END{print sum}' #初始sum为10，结果为20
 ############
