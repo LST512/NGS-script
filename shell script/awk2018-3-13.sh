@@ -1,4 +1,26 @@
 #awk用法2018-3-13，lst
+
+#-----------------------
+#awk传递变量
+for i in {1..12}
+do
+awk -F, '{print "$i"}' file.csv > $i.txt #输出的结果全是$i
+awk -F, '{print $i}' file.csv > $i.txt #sh输出的结果是file.csv的全部内容
+awk -F, '{print "'${i}'"}' file.csv > $i.txt #输出的结果都是1 2 ..
+done
+#解决办法用cut
+for i in {1..12}
+do
+cut -d , -f $i file.csv > $i.txt
+done
+#-----------------------------------------------
+
+#for嵌套复制文件
+for i in {1..12}
+do
+sed "/^$/d" ${i}.txt|cat|while read id;do cp /home/lst/Desktop/新建文件夹/all/${id}.pdf /home/lst/Desktop/新建文件夹/second/${i};done
+done
+
 #2019-3-15更新
 #打印某个字符出现的行号
 awk -F ';' '{for (f=1; f <= NF; f+=1) {if ($f ~ /Asinex/) {print NR,$f}}}' text.dat > asinex.dat
