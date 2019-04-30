@@ -14,8 +14,8 @@
 456
 
 '''
-sed G file #添加一个空行
-sed "G;G" file #添加两个空行
+sed G file #添加一个空行 sed "s/$/&\n/" file
+sed "G;G" file #添加两个空行 sed "s/$/&\n\n/" file
 
 #不管有无空行，只保留一个
 sed "G;G" file > file1
@@ -25,6 +25,30 @@ sed "/^$/d;G" file1
 sed "/abc/{x;p;x}" file #在abc前加空行
 sed "/abc/G" file #在abc后加空行
 sed "/abc/{x;p;x;G}" file #在abc前后都加空行
+
+#匹配c开始到d结束的行，将8替换成0. 注意：先要出现c才算匹配
+# sed匹配时，第一个匹配到，即使第二个没有，第一个匹配到的行到最后一行都会被修改
+# 如果第一个没匹配到，后面的无论如何都不会处理
+sed "/c/,/d/ s/8/0/g" file 
+sed "/c/,/z/ s/8/0/g" file #虽然没有匹配到z，但是c后面的默认都会被处理
+'''
+d 888       888
+d c88       c00
+b 888       000
+c 888   ==> 000
+d 888       000
+c 888       000
+'''
+# 匹配没有c的行，将所有的8替换成a
+sed '/c/ !s/8/a/g' file 
+'''
+d 888       aaa
+d c88       c88
+b 888       aaa
+c 888   ==> 888
+d 888       aaa
+c 888       888
+'''
 
 #2019-4-16 更新
 
