@@ -3,6 +3,28 @@
 # forked by http://dongweiming.github.io/sed_and_awk/#/3
 # lst
 
+#2019-4-30更新
+#在文件内容的每行都添加一个空行
+'''
+123
+456
+=====>
+123
+
+456
+
+'''
+sed G file #添加一个空行
+sed "G;G" file #添加两个空行
+
+#不管有无空行，只保留一个
+sed "G;G" file > file1
+sed "/^$/d;G" file1
+
+#在匹配行前加空行
+sed "/abc/{x;p;x}" file #在abc前加空行
+sed "/abc/G" file #在abc后加空行
+sed "/abc/{x;p;x;G}" file #在abc前后都加空行
 
 #2019-4-16 更新
 
