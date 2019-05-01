@@ -1,3 +1,4 @@
+#!/bin/bash
 #awk用法2018-3-13，lst
 
 #-----------------------
@@ -32,7 +33,9 @@ awk '{if(NR%3!=0)ORS=" ";else ORS="\n"}{print $0}' test.txt
 awk '{if(NR%3==0)ORS="\n";else ORS=" "}1' test.txt
 # 前两行合并的另一种
 sed -n '{N;s/\n/\t/p}' test.txt
+sed 'N;s/\n/,/'  test.txt
 awk '{if(NR%2!=0)ORS=" ";else ORS="\n"}{print $0}' test.txt
+awk '{if(NR%2!=0)ORS=",";else ORS="\n"}{print $0}' file
 # igv处理 
 # snapshotDirectory /home/lst/NGS/second_PAC_results/AN3661/igv_up
 cat final.txt|awk 'BEGIN{RS="#"}{print $0}'|sed "s/\t//g" > igv_batch_up.txt

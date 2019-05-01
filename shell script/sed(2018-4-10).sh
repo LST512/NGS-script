@@ -216,10 +216,11 @@ sed 's/^.*/<&>/' file
 #sed --in-place=bak 's/root/Root/' file 
 ################
 '''
-行前行后添加内容以及修改行内容 a i c
+行前行后添加内容以及修改行内容 a(append) i(insert) c(替换) d(删除) p(打印)
 '''
 # sed '[address] a the-line-to-append' input-file
 sed '2 a user1,/bin/bash' file #在第二行后添加 user1,/bin/bash（变成第三行）
+sed "/bin/a something " file # 匹配fish，在后面追加something
 #sed '[address] i the-line-to-insert' input-file
 sed '2 i user1,/bin/bash' file #在第二行前添加 user1,/bin/bash （变成第二行）
 #sed '[address] c the-line-to-insert' input-file
@@ -362,6 +363,7 @@ date "+%m/%y/%d" | sed -r 's/\//\-/g'
 
 
 #sed 高级模式
+#参考https://coolshell.cn/articles/9104.html
 # update 2019-5-1
 '''
 ^ 表示一行的开头。如：/^#/ 以#开头的匹配。
@@ -383,8 +385,41 @@ sed "2，$s/h/H/g" #对第2行到最后一行操作
 sed "s/h/H/1" #替换每一行的第一个
 sed "s/h/H/2" #替换每一行的第二个
 sed "s/h/H/3g" #替换每一行的第三个及以后
+#--------------------------------------
+# N 把下一行的内容纳入当成缓冲区做匹配。
+# 原文本中的偶数行纳入奇数行匹配，而s只匹配并替换一次
+sed 'N;s/my/your/' file # 等同 sed '1~3s/my/your/' file
+'''
+      raw                       sed
+This is my cat              This is your cat
+  my cats name is betty       my cats name is betty
+This is my dog              This is your dog
+  my dogs name is frank       my dogs name is frank
+This is my fish             This is your fish
+  my fishs name is george     my fishs name is george
+This is my goat             This is your goat
+  my goats name is adam       my goats name is adam  
+'''
+# N处理后变成如下格式
+# This is my cat\n  my cat's name is betty
+# This is my dog\n  my dog's name is frank
+# This is my fish\n  my fish's name is george
+# This is my goat\n  my goat's name is adam
+  
+#前两行变成一行的办法
+sed 'N;s/\n/,/' file
+# sed -n '{N;s/\n/,/p}' file
+# awk '{if(NR%2!=0)ORS=",";else ORS="\n"}{print $0}' file
+# awk '{if(NR%2==0)ORS="\n";else ORS=","}1' file
 
+# 输出结果如下
+# This is my cat,  my cat's name is betty
+# This is my dog,  my dog's name is frank
+# This is my fish,  my fish's name is george
+# This is my goat,  my goat's name is adam
 
+# pattern space
+  
 
 
 
