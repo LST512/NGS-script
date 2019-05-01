@@ -1,3 +1,4 @@
+#!/bin/bash
 # linux sed用法
 # date:2018-4-10
 # forked by http://dongweiming.github.io/sed_and_awk/#/3
@@ -357,3 +358,45 @@ sed -r 's/([^0-9a-Z]+)(.+))//g' filename
 sed -r 's/^([a-Z0-9]+)(.{3})([0-9]+)(.)([0-9]+)(.)([a-Z]+)(.+)/\1\7/g' filename
 #用命令获取格式为 mm/yy/dd 的日期格式，结合管道，将其换成   mm；yy；dd格式
 date "+%m/%y/%d" | sed -r 's/\//\-/g'
+--------------------------------------
+
+
+#sed 高级模式
+# update 2019-5-1
+'''
+^ 表示一行的开头。如：/^#/ 以#开头的匹配。
+$ 表示一行的结尾。如：/}$/ 以}结尾的匹配。
+\< 表示词首。 如：\<abc 表示以 abc 为首的詞。
+\> 表示词尾。 如：abc\> 表示以 abc 結尾的詞。
+. 表示任何单个字符。
+* 表示某个字符出现了0次或多次。
+[ ] 字符集合。 如：[abc] 表示匹配a或b或c，还有 [a-zA-Z] 表示匹配所有的26个字符。如果其中有^表示反，如 [^a] 表示非a的字符
+'''
+#从html获取tag
+#<b>hello</b> world <span style="text-decoration: underline;">sed</span> is useful?
+sed "s/<[^>]*>//g" html.txt
+#指定行
+sed "2s/h/H/g" #只对第二行操作
+sed "2，5s/h/H/g" #对第2行到第5行操作
+sed "2，$s/h/H/g" #对第2行到最后一行操作
+#指定每一行的第几个
+sed "s/h/H/1" #替换每一行的第一个
+sed "s/h/H/2" #替换每一行的第二个
+sed "s/h/H/3g" #替换每一行的第三个及以后
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
