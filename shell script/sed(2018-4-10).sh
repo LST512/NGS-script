@@ -78,8 +78,6 @@ sed -n '1,3p' /etc/passwd
 #sed打印5-8行
 sed -n '5,8p'
 awk 'NR>4 && NR <9'
-grep 5 q.txt -A 3
-grep 8 q.txt -B 3
 '''
 正则
 '''
@@ -418,15 +416,31 @@ sed 'N;s/\n/,/' file
 # This is my fish,  my fish's name is george
 # This is my goat,  my goat's name is adam
 
-# pattern space
+# address可以是一个数字，也可以是一个模式，
+#你可以通过逗号要分隔两个address 表示两个address的区间
+sed '/dog/,+3s/^/# /g' #表示匹配dog行以及后面连续的3行，在开头加# 。
   
+#cmd可以是多个，它们可以用分号分开，可以用大括号括起来作为嵌套命令
+sed '3,6 {/This/d}' file.txt # 匹配3到6行，删除含有This的行
 
+sed '3,6 {/This/{/fish/d}}' file.txt # 匹配3到6行，然后匹配含有This的行，再匹配fish，即删除两者同时存在的行
 
+sed '1,${/This/d;s/^ *//g}' file.txt #删除含有This的行，删除空格开头的行
 
-
-
-
-
+# hold space
+'''
+p： 把模式空间复制到标准输出
+D： 删除模式空间内第一个 newline 字母 \n 前的资料。  
+d： 表示删除模式空间
+n： 输出模式空间行，读取下一行替换当前模式空间的行，执行下一条处理命令而非第一条命令。
+N： 读入下一行，追加到模式空间行后面，此时模式空间有两行。
+g： 将hold space中的内容拷贝到pattern space中，原来pattern space里的内容清除
+G： 将hold space中的内容append到pattern space\n后
+h： 将pattern space中的内容拷贝到hold space中，原来的hold space里的内容被清除
+H： 将pattern space中的内容append到hold space\n后
+x： 交换pattern space和hold space的内容
+!： 对所选行以外的所有行应用命令。
+'''
 
 
 
