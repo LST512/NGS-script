@@ -1,6 +1,6 @@
 #!/home/lst/miniconda2/envs/my_perl/bin/perl -w
 #!/usr/bin/perl -w
-use strict;
+#use strict;
 #2019-4-1
 #learn perl
 #lst
@@ -551,7 +551,7 @@ say substr $str,-2,2;#89；负数为偏移量，包括该位置。
 say substr $str,2;#3456789
 say substr $str,-1,1;#9
 #替换
-$A = substr $str,2,-2,A;
+$A = substr $str,2,-2,A;#$A代表被替换的部分
 say $A;#34567
 say $str;#12A89
 =cut
@@ -861,3 +861,104 @@ print $str2,"\n";#123123
 #     my $str2 = substr($str,$i,1);
 #     print "$str2-";#A-B-C-D-E-
 # }
+
+=pod
+##################
+# perl读取文件的方式
+# 整体读入，逐行处理
+$file = "aa.txt";
+open(FILE,"<",$file)||die "cannot openthe file:$!\n";
+@myfile=<FILE>;
+foreach $line (@myfile){
+    print $line;
+}
+close FILE;
+# 逐行读入，边读取边处理
+$file = "aa.txt";
+open(FILE,"<",$file)||die "cannot openthe file:$!\n";
+while (<FILE>){
+    print;
+}
+close FILE;
+####################
+=cut
+
+=pod
+################# GenBank文件中提取注释和序列1
+
+#声明和初始化变量
+
+my @annotation = (); #数组存放序列外的文件
+my $sequence = ""; # 标量，存放序列
+#my $filename = "/home/lst/Desktop/perl/record.gb";#GenBank文件
+my $filename = $ARGV[0];
+#解析GenBank文件
+parseGenBank(\@annotation,\$sequence,$filename);
+
+#输出
+print @annotation;
+#print_sequence($sequence,50);#输出格式，一行50
+print @annotation;
+#子程序1
+sub parseGenBank{
+    my ($annotation,$sequence,$filename) = @_; #接受参数
+    my $flag = 0;
+    open IN,"<",$filename;
+    my @file = <IN>;
+    foreach my $line (@file){
+       if ($line =~ /^\/\/\n/){
+           last;
+       } 
+       elsif ($flag){
+           $$sequence .=$line;
+       }
+       elsif($line =~ /^ORIGIN/){
+           $flag = 1;#如果是ORIGIN开头，则后面的内容为序列文件。设定标签，可以一直取到序列。
+       }
+       else{
+           push(@annotation,$line);
+       }
+    }
+close IN;
+$$sequence =~ s/[\s0-9]//g;
+}
+
+# #子程序2
+#     $line_number = 0;
+#     foreach  $line (@file){
+#         if ($line =~ /^\/\/\n/){
+#             $end = $line_number;
+#             last;
+#         }
+#         elsif($line =~ /^ORIGIN/){
+#             $origin = $line_number;
+#         }
+#         $line_number++;
+#     }
+#     @annotation = @file[0..($origin-1)];
+#     @sequence = @file[($origin+1)..($end-1)]
+#}
+#格式化输出
+sub print_sequence{
+    my($sequence,$length) = @_;
+    for (my $pos = 0; $pos < length($sequence);$pos += $length){
+        print substr($sequence,$pos,$length),"\n";
+    }
+}
+#########################
+=cut
+
+
+################# GenBank文件中提取注释和序列2
+
+my $annotation = "";
+my $dna = "";
+my $record = ""
+my $filename = $ARGV[0];
+my $save_input_separator = $/;
+open FILE,"<",$filename;
+$record = <FILE>;
+print $record;
+
+
+

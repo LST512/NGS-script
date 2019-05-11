@@ -22,9 +22,14 @@ do
 sed "/^$/d" ${i}.txt|cat|while read id;do cp /home/lst/Desktop/新建文件夹/all/${id}.pdf /home/lst/Desktop/新建文件夹/second/${i};done
 done
 
+
+# 偶数行前加行号
+awk '{if (NR%2==0){print NR" "$0}else {print "  "$0}}' file
 #2019-3-15更新
 #打印某个字符出现的行号
-awk -F ';' '{for (f=1; f <= NF; f+=1) {if ($f ~ /Asinex/) {print NR,$f}}}' text.dat > asinex.dat
+$ head -1 AN3661_col0_PAC_10_header_nor.csv|awk 'BEGIN{FS=","}{for(f=1;f<=NF;f+=1){if($f ~/gene/){print f,$f}}}' #打印列号和名字
+awk -F, '{print $33}' AN3661_col0_PAC_10_header_nor.csv|awk -F. '{print $1}'|sed -e "/NULL/d" -e "/anti_gene/d"|uniq > anti_gene_uniq.list #获取唯一id
+
 #更新时间 2018-11-30
 #双引号与单引号有区别
 # awk把前几行合并为一行

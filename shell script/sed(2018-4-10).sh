@@ -4,6 +4,11 @@
 # forked by http://dongweiming.github.io/sed_and_awk/#/3
 # lst
 
+
+# s与y的区别;y单个看待;s命令将查找条件字符串作为一个整体
+echo "ATGATCG"|sed "y/ATCG/atcg/" # atgatcg
+echo "ATGATCG"|sed "s/ATCG/atcg/" # ATGatcg
+echo "ATGATCG"|sed "y/ATCG/tagc/"|rev #f反向互补
 #2019-4-30更新
 #在文件内容的每行都添加一个空行
 '''
@@ -69,6 +74,7 @@ cat AN3611_header.tsv|xargs -i sed '1 i {}' AN3661_col0_PAC.tsv > AN3661_col0_PA
 # 对于chrMt可以先替换成chrM,后续还要和比对数据一直，可能还要改成chrMt,chrPt
 cat tair10.fa|sed -e 's/chrMt/chrM/g' -e 's/chrPt/chrP/g'|sed 's/\(chr\)\(.\)\ \(.*\)/\1\2/g'
 sed -r "s/^(>chr)(.) (.)*/\1\2/"
+sed -r "s/(^>[A-Za-z0-9]+)(.)([a-z0-9]+)(.*)/\1\2\3/" Bamboo.Hic.pep > Bamboo.Hic.modify.pep
 #替换第一行的内容为>chr1
 sed '1c >chr1' TAIR10.fa
 #分别打印行，打印第三行，打印前三行
@@ -81,6 +87,7 @@ awk 'NR>4 && NR <9'
 '''
 正则
 '''
+# -n 取消默认输出，sed默认会输出所有文本内容，使用-n参数后只显示处理过的行
 #打印root开头；打印root结尾；打印冒号：开头，匹配r然后四个单字符；匹配包含3或者5的行；匹配包含3或4或5的行;匹配1或者2的行;匹配以数字开头有至少3个至多6个数字结尾的行；删除所有注释的行和空行;windows-->linux;
 sed -n '/^root/ p' file
 sed -n '/root$/ p' file
@@ -162,8 +169,8 @@ sed -n '
 隔行打印
 '''
 #打印奇数行,偶数行，从2行开始打印然后打印5,8,11...
-sed -n '1~2 p' file
-sed -n '2~2 p' file
+sed -n '1~2 p' file # sed -n 'p;n'
+sed -n '2~2 p' file # sed -n 'n;p'
 sed -n '2~3 p' file
 #查找包含root的行
 sed -n '/root/ p' file
@@ -176,18 +183,19 @@ sed -n '/root/ ,+10 p' file
 '''
 删除行 d
 '''
-# 删除所有行，删除第二行，删除第一到第四行,删除奇数行，删除root到bin的行,删除空行，删除注释行
+
 # sed -n '/>1/,/>scaffold_21/ p' glycine_max.fa > glycine_max_chr1_to_scaffold_21.fa  取出1到scaffold的内容
 # sed '/scaffold_21/d' glycine_max_chr1_to_scaffold_21.fa > glycine_max_chr1_to_chr_20.fa 去除scaffold的行，最终得到染色体的数据
 # sed -i 's/>/>chr/' glycine_max_chr1_to_chr_20.fa 添加chr
 # sed '/scaffold_21/,$ d' glycine_max.fa 直接删除所有的scaffold
-sed 'd' file
-sed '2 d' file
-sed '1,4 d' file
-sed '1~2 d' file
-sed '/root/ ,/bin/ d' file
-sed '/^$/ d' file
-sed '/^#/ d' file
+sed 'd' file # 删除所有行，
+sed '2 d' file #删除第二行，
+sed '1,4 d' file #删除第一到第四行
+sed '1~2 d' file #删除奇数行，
+sed '2~2 d' file #删除偶数行，
+sed '/root/ ,/bin/ d' file #删除root到bin的行,
+sed '/^$/ d' file #删除空行，
+sed '/^#/ d' file #删除注释行
 sed "/\<NA\>/d" file #精确匹配
 '''
 重定向 w
@@ -242,6 +250,10 @@ echo "130531170341903612","259594",2013-05-31T09:04:25Z,"1c:b0:94:b2:85:bd"|sed 
 ----------------------
 echo "130531170341903612","259594",2013-05-31T09:04:25Z,"1c:b0:94:b2:85:bd"|sed -e "s/T\(.*\):\(.*\):\(.*\)Z/\1#\2#\3/" -e "s/://g" -e "s/#/:/g"
 "130531170341903612","259594",2013-05-31T09:04:25Z,1cb094b285bd #先将非目标区域修改，再处理目标区域，将修改的目标区域修改回
+#orf预测的文件，修改基因名
+sed -r "s/(>SALT)([0-9]+)(_Cluster)([0-9]+)(-[0-9]+)(.)*/\1\2\3\4\5/" ORF_aa.fa 
+
+
 ---------------------------------------------
 ---------------------------------------------
 ---------------------------------------------
@@ -359,7 +371,7 @@ sed -r 's/^([a-Z0-9]+)(.{3})([0-9]+)(.)([0-9]+)(.)([a-Z]+)(.+)/\1\7/g' filename
 date "+%m/%y/%d" | sed -r 's/\//\-/g'
 --------------------------------------
 
-
+#2019-5更新
 #sed 高级模式
 #参考https://coolshell.cn/articles/9104.html
 # update 2019-5-1
@@ -384,8 +396,7 @@ sed "s/h/H/1" #替换每一行的第一个
 sed "s/h/H/2" #替换每一行的第二个
 sed "s/h/H/3g" #替换每一行的第三个及以后
 #--------------------------------------
-# N 把下一行的内容纳入当成缓冲区做匹配。
-# 原文本中的偶数行纳入奇数行匹配，而s只匹配并替换一次
+# 读入下一行，追加到模式空间行后面，此时模式空间有两行。
 sed 'N;s/my/your/' file # 等同 sed '1~3s/my/your/' file
 '''
       raw                       sed
@@ -430,10 +441,14 @@ sed '1,${/This/d;s/^ *//g}' file.txt #删除含有This的行，删除空格开�
 # hold space
 '''
 p： 把模式空间复制到标准输出
-D： 删除模式空间内第一个 newline 字母 \n 前的资料。  
-d： 表示删除模式空间
-n： 输出模式空间行，读取下一行替换当前模式空间的行，执行下一条处理命令而非第一条命令。
-N： 读入下一行，追加到模式空间行后面，此时模式空间有两行。
+P： 打印从开始到第一个\n的内容，sed并不对每行末尾\n进行处理，
+    但是对N命令追加的行间\n进行处理，因为此时sed将两行看做一行。
+d： 删除当前模式空间内容（不在传到标准输出）并放弃之后的命令，读取新内容重新执行sed
+D： 删除当前模式空间开端至\n换行符内容（不在传到标准输出）并放弃之后的命令，
+    但是剩余模式空间内容重新执行sed  
+n： 提前读取下一行，覆盖模式空间前一行（并没有删除，因此依然打印至标准输出）
+    如果命令未执行成功，则放弃后面的命令，读取下一行再执行sed
+N： N 追加下一行到当前行，把两行看作一行，但是\n换行符还在
 g： 将hold space中的内容拷贝到pattern space中，原来pattern space里的内容清除
 G： 将hold space中的内容append到pattern space\n后
 h： 将pattern space中的内容拷贝到hold space中，原来的hold space里的内容被清除
@@ -441,6 +456,34 @@ H： 将pattern space中的内容append到hold space\n后
 x： 交换pattern space和hold space的内容
 !： 对所选行以外的所有行应用命令。
 '''
+# 如下文本内容 file：
+# one
+# two
+# three
+# four
+
+---------------
+sed "{x;p;x}" #在所有行前后插入空行
+sed "/two/{x;p;x}" #在匹配two的行前后插入空行
+----------------
+sed "{x;p}" #输出 空格\n空格\n\one\n\one\n\two\n\two\n\three\n\three\n; 没有four
+sed "{p;x}" #输出 one\n空格\n\two\n\one\nthree\n\two\n\four\n\three
+----------------
+sed = file.txt|sed N #添加行号，行号是一行;cat -n file
+sed = file.txt|sed "N;s/\n/\t/" #行号和内容是一行，tab隔开
+sed '/./=' html.txt|sed '/./N;s/\n/ /' #不对空行编号（注意不是空格）；nl file
+----------------
+sed q file # head -1
+sed 10q file # head -10
+sed -n '$=' # wc -l;必须单引号
+-----------------
+sed 'n;G' # 在偶数行后加空格
+sed 'G;n' # 在奇数行后加空格
+sed 'n;d' # 删除偶数行
+
+
+
+
 
 
 
