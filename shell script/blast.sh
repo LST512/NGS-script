@@ -1,6 +1,13 @@
 #建立blast本地数据库
 makeblastdb -in Spatina.fasta -dbtype nucl -out Spatinadb
 makeblastdb -in fipv_aa.fa -dbtype prot -out fipv_aa_db
+#
+'''
+makeblastdb时一定要加上 -parse_seqids ，否则调取序列会有问题。
+调取序列的命令是blastdbcmd -db CS_v1.0_full -entry chr1A -range 2-100
+-title 给数据库起个名
+'''
+blastdbcmd -db CS_v1.0_full -entry chr1A -range 2-100
 #比对参数
 blastn -query 1.txt -db Spatinadb -out 2.txt
 blastp -query aa.txt -db fipv_aa_db -out aa_res.txt
@@ -48,6 +55,7 @@ blastp -help
 6 = tabular,
 7 = tabular with comment lines,
 8 = Text ASN.1,9 = Binary ASN.1,
+9 = Binary ASN.1,
 10 = Comma-separated values,
 11 = BLAST archive format (ASN.1),
 12 = JSON Seqalign output,

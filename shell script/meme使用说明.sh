@@ -60,6 +60,9 @@ nohup meme unigene_switch.c0Xc800.FU.short.genestopTOprox.fasta -dna -oc ./stop2
 #生成background文件
 fasta-get-markov [options] [sequence file] [background file]
 fasta-get-markov -m 3 transport_800long_seq.fasta markov3
+# oops:每个功能域在每段序列中只出现一次。该模式速度最快而且最为敏感。如果有的序列没有功能域，结果可能不准确。
+# zoops：每个功能域在每段序列中最多出现一次。速度较快，敏感性稍弱
+# anr：每个功能域在每段序列中出现的次数不定。速度慢，对功能分布情况未知的情况下有帮助。
 # meme -h
 # meme sequence-file -dna|rna|protein|alph
 #   [-o <output dir>]	name of directory for output files will not replace existing directory
