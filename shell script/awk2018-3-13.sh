@@ -8,12 +8,24 @@ do
 awk -F, '{print "$i"}' file.csv > $i.txt #输出的结果全是$i
 awk -F, '{print $i}' file.csv > $i.txt #sh输出的结果是file.csv的全部内容
 awk -F, '{print "'${i}'"}' file.csv > $i.txt #输出的结果都是1 2 ..
+#2019-6-4解决
+awk -v num=$i '{print $num}' file.csv > $i.txt #这样写ok
 done
-#解决办法用cut
+#用cut
 for i in {1..12}
 do
 cut -d , -f $i file.csv > $i.txt
 done
+#2019-6-4更新
+#awk接受shell的变量方法，双引号位于 awk 脚本 '{if($2>0)print $2}' 之外
+cat $1|awk -v FS="\t" "/$i/"'{if($2>0)print $2}'|wc -l
+# 使用awk赋值
+sample=$i
+cat $1|awk -v sample="$sample" -v FS="\t" '$0 ~ sample{if($2>0)print $2}'|wc -l
+
+
+
+
 #-----------------------------------------------
 
 #for嵌套复制文件
