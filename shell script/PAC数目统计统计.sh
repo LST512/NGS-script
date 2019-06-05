@@ -49,7 +49,20 @@ for num in {2..7}
 do
 awk -v seq=$num '{if ($seq>0)print $1}' $1|sort|uniq -c|awk '{print $2"\t"$1}' > ${num}.num
 done
-paste -d"\t" *.num|awk -v OFS="\t" '{print $1,$2,$4,$6,$8,$10,$12}' > $2
+if [ ! -f "$2" ];then
+echo "目录下没有$2，自动创建"
+else
+echo "$2已经存在，删除重建(输入Y)?"
+rm -i $2
+fi
+# 取6列，统计PAC
+for num in {2..7}
+do
+awk -v seq=$num '{if ($seq>0)print $1}' $1|sort|uniq -c|awk '{print $2"\t"$1}' > ${num}.num
+done
+paste -d"\t" *.num|awk 'BEGIN{OFS="\t";print "\tAN1\tAN2\tAN3\tCK1\tCK2\tCK3"}{print $1,$2,$4,$6,$8,$10,$12}' > $2
+rm *.num
+echo "sucess"
 rm *.num
 
 
