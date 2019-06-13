@@ -6,6 +6,15 @@ https://conda.io/miniconda.html
 # install miniconda(when asked ,choose yes)
 sh miniconda.sh
 # config miniconda add tsinghua channels
+# 清华源已经废了（2019-5）
+# 该会官方
+# 在.condarc下填写如下：
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+
+#废弃
 conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/
 conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main/
 conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/conda-forge/

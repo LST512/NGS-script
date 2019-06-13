@@ -147,6 +147,7 @@ mysqldump -uroot -pmapolya tair10 chromosome > chromosome.SQL#太大无法导出
 mysqldump -uroot -pmapolya tair10 t_gff10_ae120pm2k > t_gff10_ae120pm2k.SQL
 mysqldump -uroot -pmapolya tair10 t_gff10_org > t_gff10_org.SQL
 mysqldump -uroot -pmapolya tair10 seq2_PA > seq2_PA.SQL
+mysql -uroot -pmapolya tair10 < xxx.sql
 #下载
 scp -P 22 * lst@59.79.232.157:/home/lst/Desktop/AN3661_SQL
 #导入到本地电脑

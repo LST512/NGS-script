@@ -1,6 +1,9 @@
 # meme使用说明
 # lst
 # date 2018-4-24
+# meme lengthening.fa -dna -oc . -nostatus -time 18000 -mod anr -nmotifs 20 -minw 4 -maxw 50 -objfun classic -revcomp -markov_order 0
+#meme lengthening.fa -dna -oc . -nostatus -time 18000 -mod zoops -nmotifs 10 -minw 4 -maxw 50 -objfun classic -revcomp -markov_order 0
+# mast meme.xml lengthening.fa -oc . -nostatus
 '''
 step1 依赖安装
 '''

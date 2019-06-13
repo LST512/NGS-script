@@ -81,6 +81,33 @@ show variables like '%secure%';
 
 STAR --runThreadN 15 --outSAMtype BAM SortedByCoordinate --genomeDir $star_index --readFilesIn $id --outFileNamePrefix $output/
 
+#mysql命令
+# 导出数据
+mysqldump -uroot -p databasesname
+mysqldump -uroot -p dbname tableName >db.sql;
+mysqldump -u用户名 -p密码 数据库名 表名 --where="筛选条件" > 导出文件路径
+mysqldump --max_allowed_packet=512M -u root -p database 
+#导出整个数据库结构和数据
+mysqldump -h localhost -uroot -p123456 database > dump.sql
+#导出单个数据表结构和数据
+mysqldump -h localhost -uroot -p  database table > dump.sql
+#导出整个数据库结构（不包含数据）
+mysqldump -h localhost -uroot -p  -d database > dump.sql
+#导出单个数据表结构（不包含数据）
+mysqldump -h localhost -uroot -p  -d database table > dump.sql
+# 导出文本
+mysql -uroot -pmapolya tair10 -e "select * from 6BA_esp_amp_PAC where tot_tagnum >=5 into outfile '/home/polya/NGS/second_data/sql_data/PAC/6BA_esp_amp_PAC.txt';"
+#mysql数据库的恢复;
+mysqldump -uroot -pmapolya tair10 AN3661_PAC > AN3661_PAC.SQL
+mysqldump -uroot -pmapolya tair10 AN3661_col0_PAC > AN3661_col0_PAC.SQL
+mysqldump -uroot -pmapolya tair10 AN3661_col0_PAC_nor > AN3661_col0_PAC_nor.SQL
+mysqldump -uroot -pmapolya tair10 col0_PAC > col0_PAC.SQL
+mysqldump -uroot -pmapolya tair10 chromosome > chromosome.SQL#太大无法导出
+mysqldump -uroot -pmapolya tair10 t_gff10_ae120pm2k > t_gff10_ae120pm2k.SQL
+mysqldump -uroot -pmapolya tair10 t_gff10_org > t_gff10_org.SQL
+mysqldump -uroot -pmapolya tair10 seq2_PA > seq2_PA.SQL
+#导入
+mysql -uroot -pmapolya tair10 < xxx.sql
 
 
 
