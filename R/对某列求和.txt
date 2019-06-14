@@ -1,0 +1,2 @@
+#a是data.frame,PAT_conut,2代表列，1代表行
+apply(a[c("PAT_conut")],2,sum)
